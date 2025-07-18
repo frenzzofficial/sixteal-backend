@@ -1,0 +1,58 @@
+{
+  "name": "sixteal-backend",
+  "version": "1.0.1",
+  "description": "Official Backend Server for Sixteal",
+  "main": "/api/index.js",
+  "private": true,
+  "scripts": {
+    "start": "node dist/api/index.js",
+    "build": "tsc -p tsconfig.json",
+    "dev": "concurrently \"pnpm tsc -p tsconfig.json --watch\" \"nodemon dist/src/server.js\"",
+    "vercel:dev": "vercel dev",
+    "deploy:prod": "vercel deploy --prod",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "sixteal",
+    "backend",
+    "api",
+    "typescript",
+    "fastify",
+    "node",
+    "vercel"
+  ],
+  "author": "@vivekcsein",
+  "license": "ISC",
+  "packageManager": "pnpm@10.12.4",
+  "dependencies": {
+    "@fastify/cookie": "^11.0.2",
+    "@fastify/cors": "^11.0.1",
+    "@fastify/helmet": "^13.0.1",
+    "@fastify/jwt": "^9.1.0",
+    "@fastify/rate-limit": "^10.3.0",
+    "@fastify/static": "^8.2.0",
+    "@fastify/swagger": "^9.5.1",
+    "@fastify/swagger-ui": "^5.2.3",
+    "bcrypt": "^6.0.0",
+    "dotenv": "16.4.5",
+    "fastify": "^5.4.0",
+    "fastify-plugin": "^5.0.1",
+    "mysql2": "^3.14.2",
+    "nanoid": "^5.1.5",
+    "nodemailer": "^7.0.5",
+    "sequelize": "^6.37.7",
+    "zod": "^4.0.5"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/node": "^24.0.14",
+    "@types/nodemailer": "^6.4.17",
+    "@vercel/node": "^5.3.6",
+    "concurrently": "^9.2.0",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.3",
+    "vercel": "^44.4.3"
+  }
+}
