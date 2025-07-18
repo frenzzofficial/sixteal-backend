@@ -1,5 +1,4 @@
 import * as dotenv from "dotenv";
-import { parse } from "path";
 dotenv.config();
 
 // App/server development or build configs
@@ -9,13 +8,13 @@ const _envAppConfig = {
   APP_HOST: process.env.APP_HOST || "http://localhost:7164",
   APP_ENV: process.env.APP_ENV || ("development" as string),
   NODE_ENV: process.env.APP_ENV || ("development" as string),
+  APP_API_PATH: process.env.APP_API_PATH || "/api",
   APP_PORT: process.env.APP_PORT
     ? parseInt(process.env.APP_PORT as string, 10)
     : process.env.SERVER_PORT
       ? parseInt(process.env.SERVER_PORT as string, 10)
       : 7164,
   SERVER_PORT: parseInt(process.env.SERVER_PORT as string, 10) | 7164,
-  APP_API_PATH: process.env.APP_API_PATH || "/api",
 };
 
 //mysql database env configs

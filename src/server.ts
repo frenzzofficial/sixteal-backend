@@ -13,20 +13,22 @@ if (!envAppConfig.APP_API_PATH) {
 
 // start server
 const startserver = async () => {
-  const PORT: number = envAppConfig.APP_PORT;
-  const app = await App();
   try {
+    const PORT: number = envAppConfig.APP_PORT;
+    const app = await App();
     await new Promise((resolve, reject) => {
       app.listen({ port: PORT }, () => {
         if (envAppConfig.APP_ENV === "development") {
           console.log(`Server running on http://localhost:${PORT}`);
+          console.log(
+            `📚 API Documentation available at http://localhost:${PORT}/documentation`
+          );
         }
         resolve("server started");
         reject("server failed");
       });
     });
   } catch (err) {
-    app.log.error(err);
     console.error("Server can not start: ", err);
     process.exit(1);
   }
