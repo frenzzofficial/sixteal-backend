@@ -1,17 +1,54 @@
-export interface Iuser {
+import type { UUID } from "node:crypto";
+import { IUserProfileRoleType } from "../libs/configs/config.data";
+export interface IuserProfile {
   id: number;
-  name: string;
+  uid: string;
   email: string;
-  password?: string;
+  password: string;
+  role: IUserProfileRoleType;
+  fullname: string;
+  isActive: boolean;
+  emailVerified: boolean;
+  lastLogin?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+  username?: string;
+  avatar?: string;
   phone_number?: string;
   address?: Array<string> | string | undefined;
 }
 
-export type defaultProfileType = "DEFAULT";
-export type sellerProfileType = "SELLER";
-export type adminProfileType = "ADMIN";
+export interface OtpErrorMessages {
+  language: string;
+  otp_Lock_message: string;
+  otp_Spam_message: string;
+  otp_Cooldown_message: string;
+  otp_Attempts_message: string;
+  otp_Invalid_message: string;
+  otp_SendFailure: string;
+}
 
-export type IUserProfileType =
-  | defaultProfileType
-  | sellerProfileType
-  | adminProfileType;
+export interface OtpVerifyOptions {
+  fullname: string;
+  email: string;
+  password: string;
+  role?: IUserProfileType;
+  otp: string;
+}
+export interface ILoginOptions {
+  email: string;
+  password: string;
+  rememberme?: boolean;
+}
+export interface IUserEmailOptions {
+  email: string;
+}
+export interface IUserResetPasswordOptions {
+  email: string;
+  newPassword: string;
+}
+
+export interface IUserVerifyOtp {
+  email: string;
+  otp: string;
+}

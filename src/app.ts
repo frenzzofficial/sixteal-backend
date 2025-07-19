@@ -12,10 +12,10 @@ import helmetPlugin from "./libs/plugins/plugin.helmet";
 import swaggerPlugin from "./libs/plugins/plugin.swagger";
 import swaggerUIPlugin from "./libs/plugins/plugin.swagger_ui";
 import rateLimitPlugin from "./libs/plugins/plugin.rateLimits";
-// import dbPlugin from "./libs/database/db.plugins";
+import dbPlugin from "./libs/database/db.plugins";
 
 // import current version of api routes
-import testRoutesPlugin from "./libs/routes/routes.test";
+import testRoutesPlugin from "./services/services.testRoutes";
 
 // intialize dotenv
 dotenv.config();
@@ -40,7 +40,7 @@ const App = async (): Promise<FastifyInstance> => {
   await app.register(fastifyStatic, viewConfig);
 
   //register all database plugins
-  // await app.register(dbPlugin);
+  await app.register(dbPlugin);
 
   //register all api routes
   //index route

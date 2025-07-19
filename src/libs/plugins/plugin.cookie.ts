@@ -1,7 +1,11 @@
 import fp from "fastify-plugin";
 import type { FastifyPluginAsync } from "fastify";
 import cookie, { type FastifyCookieOptions } from "@fastify/cookie";
-import { envAppConfig, envCookieConfig, envJWTConfig } from "../configs/config.env";
+import {
+  envAppConfig,
+  envCookieConfig,
+  envJWTConfig,
+} from "../configs/config.env";
 
 const cookiePlugin: FastifyPluginAsync = fp(
   async (fastify) => {

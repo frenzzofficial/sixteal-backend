@@ -63,6 +63,7 @@ const _envJWTConfig = {
 const _envCookieConfig = {
   COOKIE_SECURE: process.env.APP_ENV === "production" ? true : false,
   COOKIE_HTTP_ONLY: process.env.APP_ENV === "production" ? true : false,
+  COOKIE_DOMAIN: process.env.COOKIE_DOMAIN as string | "localhost",
   // COOKIE_MAX_AGE: parseInt(process.env.COOKIE_MAX_AGE as string, 10) || (60 * 60 * 24 * 7),
   // COOKIE_DOMAIN: process.env.COOKIE_DOMAIN as string,
   // COOKIE_PATH: process.env.COOKIE_PATH as string,

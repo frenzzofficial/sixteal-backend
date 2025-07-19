@@ -35,7 +35,9 @@
     "@fastify/swagger": "^9.5.1",
     "@fastify/swagger-ui": "^5.2.3",
     "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
     "dotenv": "16.4.5",
+    "ejs": "^3.1.10",
     "fastify": "^5.4.0",
     "fastify-plugin": "^5.0.1",
     "mysql2": "^3.14.2",
@@ -46,6 +48,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/ejs": "^3.1.5",
     "@types/node": "^24.0.14",
     "@types/nodemailer": "^6.4.17",
     "@vercel/node": "^5.3.6",

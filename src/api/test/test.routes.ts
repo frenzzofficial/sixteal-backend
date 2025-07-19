@@ -1,12 +1,12 @@
 import type { RouteOptions } from "fastify";
 import * as errHandler from "./test.errors";
 import * as Schema from "./test.schemas";
-import * as authControllers from "./test.controllers";
+import * as testControllers from "./test.controllers";
 
 const testRoute: RouteOptions = {
   method: "GET",
   url: "/test",
-  handler: authControllers.getTestRoute,
+  handler: testControllers.getTestRoute,
   errorHandler: errHandler.getTestErrorHandler,
   schema: Schema.getTestSchema,
 };

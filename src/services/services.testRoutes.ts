@@ -1,12 +1,12 @@
 import fp from "fastify-plugin";
-import { envAppConfig } from "../configs/config.env";
+import { envAppConfig } from "../libs/configs/config.env";
 import type {
   FastifyInstance,
   FastifyPluginAsync,
   RouteOptions,
 } from "fastify";
 
-import testRoutesGroup from "../../api/test/test.routes";
+import testRoutesGroup from "../api/test/test.routes";
 
 const testRoutesPlugin: FastifyPluginAsync = fp(
   async (fastify: FastifyInstance) => {

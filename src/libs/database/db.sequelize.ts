@@ -36,7 +36,7 @@ export const connectDatabase = async (): Promise<void> => {
       // Sync models with the database (optional, but recommended)
       const DB_Sync: boolean = Boolean(envDBConfig.DB_SYNC);
       // Set force: true to drop and recreate tables
-      await sequelize.sync({ alter: true, force: DB_Sync });
+      await sequelize.sync({ force: DB_Sync });
       console.log("All models were synchronized successfully.");
     }
   } catch (error) {

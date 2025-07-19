@@ -1,4 +1,4 @@
-import type { FastifyRequest, FastifyReply, FastifyInstance } from "fastify";
+import type { FastifyRequest, FastifyReply } from "fastify";
 
 export const getTestRoute = async (
   req: FastifyRequest,
