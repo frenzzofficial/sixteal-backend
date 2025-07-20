@@ -1,9 +1,9 @@
-import { IUserProfileRoleType } from "../../../libs/configs/config.data";
-import { OtpError, ValidationError } from "../../../libs/errors/errors.app";
 import { IuserProfile } from "../../../types/user";
-import { LocalUserModel } from "../../../libs/models/model.LocalUsers";
 import redis from "../../../libs/database/db.redis";
 import { envRedisDBConfig } from "../../../libs/configs/config.env";
+import { IUserProfileRoleType } from "../../../libs/configs/config.data";
+import { OtpError, ValidationError } from "../../../libs/errors/errors.app";
+import { LocalUserModel } from "../../../libs/models/model.LocalUsers";
 import {
   sendEmail_params,
   sendEmail,

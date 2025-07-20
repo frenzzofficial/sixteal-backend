@@ -20,7 +20,6 @@ export const emalOtpVerifySchema = z.object({
     .regex(/^\d{6}$/, { message: "OTP must be numeric" }),
 });
 
-
 export const signinSchema = z.object({
   email: z.email("Invalid email format"),
   password: z.string().min(1, "Password is required"),
