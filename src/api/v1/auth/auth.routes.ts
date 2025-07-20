@@ -26,6 +26,38 @@ const verifyUserEmailRoute: RouteOptions = {
   schema: replySchemas.verifyEmailReplySchema,
 };
 
-const authRoutesGroup: RouteOptions[] = [signupRoute, verifyUserEmailRoute];
+const signinRoute: RouteOptions = {
+  method: "POST",
+  url: "/signin",
+  preHandler: validateBody(validationSchemas.signinSchema),
+  handler: authControllers.signinRouteController,
+  errorHandler: errorHandler,
+  schema: replySchemas.signinReplySchema,
+};
+
+//signout route
+const signoutRoute: RouteOptions = {
+  method: "POST",
+  url: "/signout",
+  handler: authControllers.signoutRouteController,
+  errorHandler: errorHandler,
+};
+
+const userProfileRoute: RouteOptions = {
+  method: "GET",
+  url: "/me",
+  // preHandler: authenticateToken,
+  handler: authControllers.userProfileRouteController,
+  errorHandler: errorHandler,
+};
+
+
+const authRoutesGroup: RouteOptions[] = [
+  signupRoute,
+  signinRoute,
+  signoutRoute,
+  userProfileRoute,
+  verifyUserEmailRoute,
+];
 
 export default authRoutesGroup;

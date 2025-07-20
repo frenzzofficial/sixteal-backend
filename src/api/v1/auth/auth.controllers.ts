@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 import type { FastifyRequest, FastifyReply } from "fastify";
-import { ValidationError } from "../../../libs/errors/errors.app";
+import { AuthError, ValidationError } from "../../../libs/errors/errors.app";
 import { envRedisDBConfig } from "../../../libs/configs/config.env";
-import { IuserProfile, OtpVerifyOptions } from "../../../types/user";
+import { ILoginOptions, IuserProfile, OtpVerifyOptions } from "../../../types/user";
 import { LocalUserModel } from "../../../libs/models/model.LocalUsers";
 import { IUserProfileRoleType } from "../../../libs/configs/config.data";
 
@@ -131,5 +131,138 @@ export const verifyUserEmailRouteController = async (
     reply
       .status(400)
       .send({ success: false, message: "Verification failed", error });
+  }
+};
+
+export const signinRouteController = async (
+  req: FastifyRequest,
+  reply: FastifyReply
+): Promise<void> => {
+  try {
+    const { email, password, rememberme } = req.body as ILoginOptions;
+
+    if (!email || !password) {
+      throw new ValidationError("Email & password are required");
+    }
+
+
+
+    // Validate user existence and OTP
+    const existingUser = await LocalUserModel.findByEmail(email);
+    if (!existingUser) {
+      throw new AuthError("Email does not exist");
+    }
+
+    const isValidPassword = await bcrypt.compare(password, existingUser.dataValues.password);
+    if (!isValidPassword) {
+      return reply.status(401).send({
+        success: false,
+        message: "Invalid Password",
+      });
+    }
+
+    await existingUser.update({ lastLogin: new Date() });
+
+    // Get user data
+    const userData = existingUser.toJSON();
+
+    // Token payload
+    const payload = {
+      id: existingUser.dataValues.id,
+      email: existingUser.dataValues.email,
+    };
+
+    // Token durations
+    const accessExpiry = rememberme ? "60m" : "15m";
+    const refreshExpiry = rememberme ? "30d" : "7d";
+
+    // Issue tokens
+    const accessToken = req.server.jwt.sign(payload, { expiresIn: accessExpiry });
+    const refreshToken = req.server.jwt.sign(payload, { expiresIn: refreshExpiry });
+
+    // Secure cookie setup
+    reply.setCookie("access_token", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 15 * 60 * 1000,
+      domain: process.env.COOKIE_DOMAIN || "localhost",
+    });
+
+    reply.setCookie("refresh_token", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      domain: process.env.COOKIE_DOMAIN || "localhost",
+    });
+
+    // Successful sign-in with redirect
+    reply.status(201).send({
+      success: true,
+      message: "User logged in successfully",
+      data: { user: userData },
+    });
+  } catch (error) {
+    reply
+      .status(400)
+      .send({ success: false, message: "Error Signing in", error });
+  }
+};
+
+
+export const signoutRouteController = async (
+  req: FastifyRequest,
+  reply: FastifyReply
+) => {
+  try {
+    // Clear cookies with appropriate options
+    const cookieDomain = process.env.COOKIE_DOMAIN || req.hostname;
+
+    const clearCookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict" as const,
+      domain: cookieDomain,
+      path: "/",
+    };
+
+    reply
+      .clearCookie("access_token", clearCookieOptions)
+      .clearCookie("refresh_token", clearCookieOptions);
+
+    // logger.info(`User signed out from IP: ${req.ip}`);
+
+    return reply.code(200).send({
+      success: true,
+      message: "Logout successful",
+    });
+  } catch (error) {
+    // logger.error('Signout failed', { error, ip: req.ip });
+
+    return reply.code(500).send({
+      success: false,
+      message: "Logout failed. Please try again later.",
+    });
+  }
+};
+
+export const userProfileRouteController = async (
+  req: FastifyRequest,
+  reply: FastifyReply
+): Promise<void> => {
+  try {
+
+
+    reply.status(200).send({
+      // data: user.toPublic(),
+      success: true,
+      message: "User profile fetched successfully",
+    });
+
+  } catch (error) {
+    reply
+      .status(400)
+      .send({ success: false, message: "Error fetching user profile", error });
   }
 };

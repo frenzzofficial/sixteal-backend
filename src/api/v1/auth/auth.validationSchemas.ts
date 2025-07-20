@@ -23,6 +23,7 @@ export const emalOtpVerifySchema = z.object({
 export const signinSchema = z.object({
   email: z.email("Invalid email format"),
   password: z.string().min(1, "Password is required"),
+  rememerme: z.boolean().optional(),
 });
 
 export const changePasswordSchema = z.object({

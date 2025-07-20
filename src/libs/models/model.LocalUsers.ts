@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import sequelize from "../database/db.sequelize";
 import { ValidationError } from "../errors/errors.app";
 import { emailEndsWith, IUserProfileRoleType } from "../configs/config.data";
@@ -31,12 +30,11 @@ interface ILocalUserCreationAttributes
     | "lastLogin"
     | "createdAt"
     | "updatedAt"
-  > {}
+  > { }
 
 export class LocalUserModel
   extends Model<ILocalUserAttributes, ILocalUserCreationAttributes>
-  implements ILocalUserAttributes
-{
+  implements ILocalUserAttributes {
   public id!: number;
   public uid!: string;
   public email!: string;
@@ -51,11 +49,6 @@ export class LocalUserModel
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  /** Validate plaintext password against stored hash */
-  public async validatePassword(password: string): Promise<boolean> {
-    return bcrypt.compare(password, this.password);
-  }
-
   /** Return safe JSON version without sensitive fields */
   public toJSON(): object {
     const { password, uid, emailVerified, ...safeValues } = this.get();
@@ -68,15 +61,16 @@ export class LocalUserModel
     return { id, email, fullname, username, avatar, role, isActive };
   }
 
-  /** Static helpers */
-  public static async hashPassword(password: string): Promise<string> {
-    return bcrypt.hash(password, 12);
-  }
-
   public static async findByEmail(
     email: string
   ): Promise<LocalUserModel | null> {
     return this.findOne({ where: { email: email.toLowerCase().trim() } });
+  }
+
+  public static async findById(id: string): Promise<LocalUserModel | null> {
+    return this.findOne({
+      where: { id: id.toLowerCase().trim() }
+    });
   }
 }
 
@@ -164,11 +158,6 @@ LocalUserModel.init(
       beforeValidate: (user) => {
         if (user.email) user.email = user.email.toLowerCase().trim();
         if (user.username) user.username = user.username.trim();
-      },
-      beforeUpdate: async (user: LocalUserModel) => {
-        if (user.changed("password")) {
-          user.password = await LocalUserModel.hashPassword(user.password);
-        }
       },
     },
     indexes: [
