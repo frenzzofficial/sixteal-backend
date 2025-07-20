@@ -29,10 +29,7 @@ export interface OtpErrorMessages {
 }
 
 export interface OtpVerifyOptions {
-  fullname: string;
   email: string;
-  password: string;
-  role?: IUserProfileType;
   otp: string;
 }
 export interface ILoginOptions {

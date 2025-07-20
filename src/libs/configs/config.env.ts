@@ -30,6 +30,7 @@ const _envDBConfig = {
 
 //redis database config
 const _envRedisDBConfig = {
+  DB_REDIS_ON: parseInt(process.env.DB_REDIS_ON as string, 10) | (0 as number),
   DB_URL: process.env.DB_REDIS_URL as string,
   DB_TOKEN: process.env.DB_REDIS_TOKEN as string,
 };

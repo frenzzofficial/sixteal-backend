@@ -32,8 +32,7 @@ export const renderEmailTemplate = async (
   const { templateName, data } = params;
   const templatePath = path.join(
     process.cwd(),
-    "src",
-    "views",
+    "public",
     "email-templates",
     `${templateName}.ejs`
   );

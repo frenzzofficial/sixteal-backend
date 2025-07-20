@@ -16,6 +16,7 @@ import dbPlugin from "./libs/database/db.plugins";
 
 // import current version of api routes
 import testRoutesPlugin from "./services/services.testRoutes";
+import authRoutesPlugin_v1 from "./services/services.authRoutes_v1";
 
 // intialize dotenv
 dotenv.config();
@@ -50,6 +51,7 @@ const App = async (): Promise<FastifyInstance> => {
 
   //test route
   app.register(testRoutesPlugin);
+  app.register(authRoutesPlugin_v1);
 
   // Health check endpoint
   app.get("/api/health", async (_request, reply) => {
