@@ -1,10 +1,14 @@
 import bcrypt from "bcryptjs";
 import type { FastifyRequest, FastifyReply } from "fastify";
-import { AuthError, ValidationError } from "../../../libs/errors/errors.app";
 import { envRedisDBConfig } from "../../../libs/configs/config.env";
-import { ILoginOptions, IuserProfile, OtpVerifyOptions } from "../../../types/user";
 import { LocalUserModel } from "../../../libs/models/model.LocalUsers";
 import { IUserProfileRoleType } from "../../../libs/configs/config.data";
+import { AuthError, ValidationError } from "../../../libs/errors/errors.app";
+import {
+  ILoginOptions,
+  IuserProfile,
+  OtpVerifyOptions,
+} from "../../../types/user";
 
 import {
   sendOtp,
@@ -145,15 +149,16 @@ export const signinRouteController = async (
       throw new ValidationError("Email & password are required");
     }
 
-
-
     // Validate user existence and OTP
     const existingUser = await LocalUserModel.findByEmail(email);
     if (!existingUser) {
       throw new AuthError("Email does not exist");
     }
 
-    const isValidPassword = await bcrypt.compare(password, existingUser.dataValues.password);
+    const isValidPassword = await bcrypt.compare(
+      password,
+      existingUser.dataValues.password
+    );
     if (!isValidPassword) {
       return reply.status(401).send({
         success: false,
@@ -177,8 +182,12 @@ export const signinRouteController = async (
     const refreshExpiry = rememberme ? "30d" : "7d";
 
     // Issue tokens
-    const accessToken = req.server.jwt.sign(payload, { expiresIn: accessExpiry });
-    const refreshToken = req.server.jwt.sign(payload, { expiresIn: refreshExpiry });
+    const accessToken = req.server.jwt.sign(payload, {
+      expiresIn: accessExpiry,
+    });
+    const refreshToken = req.server.jwt.sign(payload, {
+      expiresIn: refreshExpiry,
+    });
 
     // Secure cookie setup
     reply.setCookie("access_token", accessToken, {
@@ -209,7 +218,6 @@ export const signinRouteController = async (
       .send({ success: false, message: "Error Signing in", error });
   }
 };
-
 
 export const signoutRouteController = async (
   req: FastifyRequest,
@@ -252,14 +260,11 @@ export const userProfileRouteController = async (
   reply: FastifyReply
 ): Promise<void> => {
   try {
-
-
     reply.status(200).send({
       // data: user.toPublic(),
       success: true,
       message: "User profile fetched successfully",
     });
-
   } catch (error) {
     reply
       .status(400)

@@ -1,7 +1,7 @@
 import fp from "fastify-plugin";
+import { connect_redisDB } from "./db.redis";
 import type { FastifyPluginAsync } from "fastify";
 import sequelize, { connectDatabase } from "./db.sequelize";
-import { connect_redisDB } from "./db.redis";
 
 // Models
 // import SocialUserModel from "../models/model.SocialUsers";

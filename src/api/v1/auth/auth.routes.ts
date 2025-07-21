@@ -46,11 +46,9 @@ const signoutRoute: RouteOptions = {
 const userProfileRoute: RouteOptions = {
   method: "GET",
   url: "/me",
-  // preHandler: authenticateToken,
   handler: authControllers.userProfileRouteController,
   errorHandler: errorHandler,
 };
-
 
 const authRoutesGroup: RouteOptions[] = [
   signupRoute,

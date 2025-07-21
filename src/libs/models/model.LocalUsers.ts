@@ -1,7 +1,7 @@
 import sequelize from "../database/db.sequelize";
 import { ValidationError } from "../errors/errors.app";
-import { emailEndsWith, IUserProfileRoleType } from "../configs/config.data";
 import { DataTypes, Model, Optional } from "sequelize";
+import { emailEndsWith, IUserProfileRoleType } from "../configs/config.data";
 
 export interface ILocalUserAttributes {
   id: number;
@@ -30,11 +30,12 @@ interface ILocalUserCreationAttributes
     | "lastLogin"
     | "createdAt"
     | "updatedAt"
-  > { }
+  > {}
 
 export class LocalUserModel
   extends Model<ILocalUserAttributes, ILocalUserCreationAttributes>
-  implements ILocalUserAttributes {
+  implements ILocalUserAttributes
+{
   public id!: number;
   public uid!: string;
   public email!: string;
@@ -69,7 +70,7 @@ export class LocalUserModel
 
   public static async findById(id: string): Promise<LocalUserModel | null> {
     return this.findOne({
-      where: { id: id.toLowerCase().trim() }
+      where: { id: id.toLowerCase().trim() },
     });
   }
 }
